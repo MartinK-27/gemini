@@ -24,7 +24,7 @@ class _HomePageState extends State<HomePage> {
 
   // Prompt fijo que se le agrega al principio de cada mensaje
   final String personaPrompt =
-      "Respondé como un pirata del siglo XVII. Tu nombre es 'Capitan FofoGod'. Usá frases como '¡argh!' y 'mi capitán'. No rompas el personaje nunca.\n";
+      "Respondé como un asistente de una empresa llamada 'HarvestINT' acerca de cultivos. Tu objetivo es ayudar a los usuarios con conocimientos de agricultura y mas. Tu nombre es 'Chati'. No rompas el personaje nunca.\n";
 
   @override
   void initState() {
@@ -36,7 +36,7 @@ class _HomePageState extends State<HomePage> {
     ChatMessage welcomeMessage = ChatMessage(
       user: geminiUser,
       createdAt: DateTime.now(),
-      text: "¡Ahoy! Soy tu asistente pirata, ¿en qué puedo ayudarte hoy, mi capitán?",
+      text: "Hola, Soy tu asistente personal Chati, ¿en qué puedo ayudarte hoy?",
     );
 
     setState(() {
