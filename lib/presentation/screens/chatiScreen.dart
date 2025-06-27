@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gemini/flutter_gemini.dart';
 import 'package:dash_chat_2/dash_chat_2.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+class ChatiScreen extends StatefulWidget {
+  const ChatiScreen({super.key});
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<ChatiScreen> createState() => _ChatiScreenState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _ChatiScreenState extends State<ChatiScreen> {
   final Gemini gemini = Gemini.instance;
 
   List<ChatMessage> messages = [];
