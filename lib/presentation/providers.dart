@@ -1,7 +1,14 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gemini/entities/users.dart';
+import 'package:dash_chat_2/dash_chat_2.dart';
 
 StateProvider<String> userIDProvider = StateProvider<String>((ref) => '');
+
+
+
+final chatMessagesProvider = StateProvider<List<ChatMessage>>((ref) => []);
+
+
 
 StateProvider<List<Users>> userProvider = StateProvider((ref) => [
 Users(

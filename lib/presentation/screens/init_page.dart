@@ -166,7 +166,7 @@ class InitPageState extends ConsumerState<InitPage> {
                       if (usuarioingresando.contrasena == textoingresado2 && usuarioingresando.email == textoingresado1) {
                         mostrarSnackBar(context, 'Incio de sesion exitoso');
                         ref.read(userIDProvider.notifier).update((State) => usuarioingresando.id);
-                        context.go('/ChatiScreen');
+                        context.go('/HomeScreen');
                         setState(() {});
                       } 
                       else {
@@ -183,11 +183,11 @@ class InitPageState extends ConsumerState<InitPage> {
               SizedBox(height: 30,),
               RichText(
           text: TextSpan(
-            text: 'Si no tenes cuenta, ',
+            text: '¿No tenes cuenta? ',
             style: TextStyle(color: Colors.black, fontSize: 18),
             children: [
               TextSpan(
-                text: 'registrate',
+                text: 'Registrate',
                 style: TextStyle(color: Colors.blue, decoration: TextDecoration.underline),
                 recognizer: TapGestureRecognizer()
                   ..onTap = () {
@@ -320,7 +320,7 @@ class InitPageState extends ConsumerState<InitPage> {
                         id: DateTime.now().millisecondsSinceEpoch.toString(), // Genera un ID único 
                       ),
                     ]);
-                    context.go('/ChatiScreen');
+                    context.go('/HomeScreen');
                   }
                   
                 },

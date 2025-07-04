@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gemini/flutter_gemini.dart';
 import 'package:dash_chat_2/dash_chat_2.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:gemini/presentation/providers.dart';
 
-class ChatiScreen extends StatefulWidget {
+class ChatiScreen extends ConsumerStatefulWidget {
   const ChatiScreen({super.key});
 
   @override
-  State<ChatiScreen> createState() => _ChatiScreenState();
+  ChatiScreenState createState() => ChatiScreenState();
 }
 
-class _ChatiScreenState extends State<ChatiScreen> {
+class ChatiScreenState extends ConsumerState<ChatiScreen> {
   final Gemini gemini = Gemini.instance;
-
-  List<ChatMessage> messages = [];
 
   ChatUser currentUser = ChatUser(id: "0", firstName: "User");
   ChatUser geminiUser = ChatUser(
@@ -22,9 +22,8 @@ class _ChatiScreenState extends State<ChatiScreen> {
         "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSm5xNOdkOwTDL9cxAWHDDyjK-6HcM-qHCxhw&s",
   );
 
-  // Prompt fijo que se le agrega al principio de cada mensaje
   final String personaPrompt =
-      "Respondé como un asistente de una empresa llamada 'HarvestINT' acerca de cultivos. Tu objetivo es ayudar a los usuarios con conocimientos de agricultura y mas. Tu nombre es 'Chati'. No rompas el personaje nunca.\n";
+      "Sos un asistente virtual llamado 'Chati' de la empresa 'HarvestINT', experto en cultivos. Tu tarea es responder dudas sobre agricultura de forma clara y precisa. No rompas el personaje.\n";
 
   @override
   void initState() {
@@ -36,16 +35,17 @@ class _ChatiScreenState extends State<ChatiScreen> {
     ChatMessage welcomeMessage = ChatMessage(
       user: geminiUser,
       createdAt: DateTime.now(),
-      text: "Hola, Soy tu asistente personal Chati, ¿en qué puedo ayudarte hoy?",
+      text: "Hola, soy tu asistente personal Chati, ¿en qué puedo ayudarte hoy?",
     );
 
-    setState(() {
-      messages = [welcomeMessage];
-    });
+    final messages = ref.read(chatMessagesProvider.notifier);
+    messages.state = [welcomeMessage];
   }
 
   @override
   Widget build(BuildContext context) {
+    final messages = ref.watch(chatMessagesProvider);
+
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -55,21 +55,40 @@ class _ChatiScreenState extends State<ChatiScreen> {
         currentUser: currentUser,
         onSend: _sendMessage,
         messages: messages,
-         inputOptions: InputOptions(
-    alwaysShowSend: true, // Muestra el botón de enviar siempre, opcional
-    sendOnEnter: true,     // Envía el mensaje al presionar Enter
-  ),
+        inputOptions: InputOptions(
+          alwaysShowSend: true,
+          sendOnEnter: true,
+        ),
       ),
     );
   }
 
+  String _buildFullPrompt() {
+    final messages = ref.read(chatMessagesProvider);
+    String chatHistory = "";
+
+    for (var msg in messages.reversed) {
+      if (msg.user.id == geminiUser.id) {
+        if (msg.text.toLowerCase().contains("soy chati") || msg.text.toLowerCase().contains("asistente personal")) {
+          continue;
+        }
+      }
+      String speaker = msg.user.id == currentUser.id ? "Usuario" : "Chati";
+      chatHistory += "$speaker: ${msg.text}\n";
+    }
+
+    return personaPrompt + chatHistory;
+  }
+
   void _sendMessage(ChatMessage chatMessage) {
-    setState(() {
-      messages = [chatMessage, ...messages];
-    });
+    final messagesNotifier = ref.read(chatMessagesProvider.notifier);
+    
+    messagesNotifier.state = [chatMessage, ...messagesNotifier.state];
+
     String accumulatedResponse = "";
+
     try {
-      final fullPrompt = personaPrompt + chatMessage.text;
+      final fullPrompt = _buildFullPrompt();
 
       gemini.streamGenerateContent(fullPrompt).listen((event) {
         String responsePart = event.content?.parts?.fold("", (prev, part) {
@@ -78,16 +97,14 @@ class _ChatiScreenState extends State<ChatiScreen> {
             }) ??
             "";
         accumulatedResponse += responsePart;
-    }, onDone: () {
+      }, onDone: () {
         ChatMessage message = ChatMessage(
           user: geminiUser,
           createdAt: DateTime.now(),
           text: accumulatedResponse,
         );
 
-        setState(() {
-          messages = [message, ...messages];
-        });
+        messagesNotifier.state = [message, ...messagesNotifier.state];
       });
     } catch (e) {
       print("Error: $e");
