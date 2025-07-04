@@ -32,6 +32,7 @@ class ChatiScreenState extends ConsumerState<ChatiScreen> {
   }
 
   void _showWelcomeMessage() {
+  Future.delayed(Duration.zero, () {
     ChatMessage welcomeMessage = ChatMessage(
       user: geminiUser,
       createdAt: DateTime.now(),
@@ -40,7 +41,8 @@ class ChatiScreenState extends ConsumerState<ChatiScreen> {
 
     final messages = ref.read(chatMessagesProvider.notifier);
     messages.state = [welcomeMessage];
-  }
+  });
+}
 
   @override
   Widget build(BuildContext context) {
