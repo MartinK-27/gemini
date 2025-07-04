@@ -7,7 +7,7 @@ StateProvider<String> userIDProvider = StateProvider<String>((ref) => '');
 
 
 final chatMessagesProvider = StateProvider<List<ChatMessage>>((ref) => []);
-
+final chatHistoryProvider = StateProvider<List<ChatMessage>>((ref) => []);
 
 
 StateProvider<List<Users>> userProvider = StateProvider((ref) => [
