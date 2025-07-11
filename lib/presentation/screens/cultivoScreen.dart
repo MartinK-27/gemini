@@ -2,25 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-class Homescreen extends ConsumerStatefulWidget {
-  const Homescreen({super.key});
+class Cultivoscreen extends ConsumerStatefulWidget {
+  const Cultivoscreen({super.key});
 
   @override
   HomescreenState createState() => HomescreenState();
 }
 
-class HomescreenState extends ConsumerState<Homescreen> {
+class HomescreenState extends ConsumerState<Cultivoscreen> {
   @override
   Widget build(BuildContext context) {
-    void mostrarSnackBar(BuildContext context, String message) {
-    final snackBar = SnackBar(
-      content: Text(message, style: TextStyle(color: Colors.white),),
-      duration: Duration(seconds: 1),
-    );
-
-    // Usamos ScaffoldMessenger para mostrar el SnackBar
-    ScaffoldMessenger.of(context).showSnackBar(snackBar);
-  }
+    
     return Scaffold(
       appBar: AppBar(title: Text("HarvestINT"), centerTitle: true,),
       body: Center(
@@ -30,7 +22,7 @@ class HomescreenState extends ConsumerState<Homescreen> {
             Padding(
                 padding: EdgeInsets.all(20),
                 child: ElevatedButton(onPressed: (){
-                  
+                  context.push('/CultivoScreen');
                 }, style: ElevatedButton.styleFrom(minimumSize: Size(500, 60), backgroundColor: Colors.white),
                 child: Text("Mis Cultivos", style: TextStyle(fontSize: 30, color: Colors.black),))
               ),
@@ -38,9 +30,9 @@ class HomescreenState extends ConsumerState<Homescreen> {
                 Padding(
                 padding: EdgeInsets.all(20),
                 child: ElevatedButton(onPressed: (){
-                  mostrarSnackBar(context, 'Work in progress xd');
-                }, style: ElevatedButton.styleFrom(minimumSize: Size(500, 60), backgroundColor: Color.fromARGB(224, 212, 205, 10)),
-                child: Text("Estadisticas", style: TextStyle(fontSize: 30, color: const Color.fromARGB(255, 0, 0, 0))), )
+                  
+                }, style: ElevatedButton.styleFrom(minimumSize: Size(500, 60), backgroundColor: Colors.red),
+                child: Text("Estadisticas", style: TextStyle(fontSize: 30, color: Colors.white)), )
               ),
 
               Padding(

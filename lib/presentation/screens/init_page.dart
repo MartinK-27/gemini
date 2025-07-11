@@ -59,7 +59,7 @@ class InitPageState extends ConsumerState<InitPage> {
                 ),
               ),
               SizedBox(height: 20),
-              Text('Login or register for use the app', style: TextStyle(fontSize: 20, color: Color.fromARGB(255, 0, 0, 0)),),
+              Text('Login or register for use this app', style: TextStyle(fontSize: 20, color: Color.fromARGB(255, 0, 0, 0)),),
 
               Padding(
                 padding: EdgeInsets.all(30),
