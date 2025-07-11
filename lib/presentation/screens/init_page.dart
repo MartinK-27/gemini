@@ -25,7 +25,6 @@ class InitPageState extends ConsumerState<InitPage> {
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
   
-  @override
   TextEditingController usuario = TextEditingController();
   TextEditingController password = TextEditingController();
   TextEditingController mail = TextEditingController();

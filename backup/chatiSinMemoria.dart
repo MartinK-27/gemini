@@ -13,7 +13,7 @@
 
   class ChatiScreenState extends ConsumerState<ChatiScreen> {
     Gemini _createGeminiInstance() {
-  return Gemini.init(apiKey: "AIzaSyC3LSaAcKZbyyZDFPlvQ0A8K06u5IOPpWQ"); // reemplazá si usás `.init()` global
+  return Gemini.init(apiKey: "AIzaSyC3LSaAcKZbyyZDFPlvQ0A8K06u5IOPpWQ"); // reemplazá si usás .init() global
   } 
 
 
@@ -83,37 +83,9 @@
       );
     }
 
-String _buildMemory() {
-  final filteredMessages = _currentMessages
-      .where((msg) => msg.user.id == currentUser.id || msg.user.id == geminiUser.id)
-      .toList()
-      .reversed
-      .take(6)
-      .toList()
-      .reversed; // Para mantener orden cronológico
-
-  return filteredMessages.map((msg) {
-    final speaker = msg.user.id == currentUser.id ? "Usuario" : "Chati";
-    return "$speaker: ${msg.text}";
-  }).join("\n");
-}
-
-
-
     String _buildFullPrompt(ChatMessage userMessage) {
-  final memory = _buildMemory();
-
-  return """
-$personaPrompt
-
-Historial reciente de conversación:
-$memory
-
-Usuario: ${userMessage.text}
-Chati:""";
-}
-
-
+    return personaPrompt + "Usuario: ${userMessage.text}\nChati:";
+  }
 
 
     void _sendMessage(ChatMessage chatMessage) {
