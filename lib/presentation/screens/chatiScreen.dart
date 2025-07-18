@@ -97,7 +97,7 @@ Sos un asistente virtual llamado 'Chati' de la empresa 'HarvestINT', experto en 
   }).join("\n");
 }
 
-
+//dou
   String _buildFullPrompt(ChatMessage userMessage) {
     final memory = _buildMemory();
 
