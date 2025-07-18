@@ -1,50 +1,58 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:gemini/presentation/providers.dart';
+import 'package:gemini/entities/crops.dart';
 import 'package:go_router/go_router.dart';
 
 class Cultivoscreen extends ConsumerStatefulWidget {
   const Cultivoscreen({super.key});
 
   @override
-  HomescreenState createState() => HomescreenState();
+  CultivoscreenState createState() => CultivoscreenState();
 }
 
-class HomescreenState extends ConsumerState<Cultivoscreen> {
+class CultivoscreenState extends ConsumerState<Cultivoscreen> {
   @override
   Widget build(BuildContext context) {
-    
+
+final cultivos = ref.watch(cultivosProvider);
+
     return Scaffold(
       appBar: AppBar(title: Text("HarvestINT"), centerTitle: true,),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Padding(
-                padding: EdgeInsets.all(20),
-                child: ElevatedButton(onPressed: (){
-                  context.push('/CultivoScreen');
-                }, style: ElevatedButton.styleFrom(minimumSize: Size(500, 60), backgroundColor: Colors.white),
-                child: Text("Mis Cultivos", style: TextStyle(fontSize: 30, color: Colors.black),))
+      body: ListView.builder(
+        itemCount: cultivos.length,
+        itemBuilder: (context, index) {
+          //return Text(movies[index].title);   //Ejemplo 1
+          return Card(
+            child: ListTile(
+              title: Text(cultivos[index].name),
+             
+              leading: Image.network(
+                cultivos[index].image,
+                width: 80,
+                height: 100,
+                fit: BoxFit.cover,
               ),
-
-                Padding(
-                padding: EdgeInsets.all(20),
-                child: ElevatedButton(onPressed: (){
-                  
-                }, style: ElevatedButton.styleFrom(minimumSize: Size(500, 60), backgroundColor: Colors.red),
-                child: Text("Estadisticas", style: TextStyle(fontSize: 30, color: Colors.white)), )
-              ),
-
-              Padding(
-                padding: EdgeInsets.all(20),
-                child: ElevatedButton(onPressed: (){
-                  context.push('/ChatiScreen');
-                }, style: ElevatedButton.styleFrom(minimumSize: Size(500, 60), backgroundColor: Color.fromARGB(255, 82, 65, 216)),
-                child: Text("Chati", style: TextStyle(fontSize: 30, color: Colors.white)), )
-              ),
-          ],
-        ),
+              onTap: () {
+                ref.read(selectedcultivoProvider.notifier).state = cultivos[index].name;
+                context.push('/SensorScreen');
+              },
+            ),
+          );
+        },
       ),
-    );
+      
+             
+        
+      floatingActionButton:  FloatingActionButton(
+            tooltip: "Agregar",
+            onPressed: () {
+              context.push('/AddcultivoScreen');
+            },
+            backgroundColor: Color.fromARGB(255, 45, 169, 226),
+            child: Icon(Icons.add,
+          ),
+    ));
   }
+  
 }

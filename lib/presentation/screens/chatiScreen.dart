@@ -85,19 +85,18 @@ Sos un asistente virtual llamado 'Chati' de la empresa 'HarvestINT', experto en 
   }
 
   String _buildMemory() {
-    final filteredMessages = _currentMessages
-        .where((msg) => msg.user.id == currentUser.id || msg.user.id == geminiUser.id)
-        .toList()
-        .reversed
-        .take(3)
-        .toList()
-        .reversed;
+  final fullHistory = ref.read(chatHistoryProvider);
 
-    return filteredMessages.map((msg) {
-      final speaker = msg.user.id == currentUser.id ? "Usuario" : "Chati";
-      return "$speaker: ${msg.text}";
-    }).join("\n");
-  }
+  final filteredMessages = fullHistory
+      .where((msg) => msg.user.id == currentUser.id || msg.user.id == geminiUser.id)
+      .toList();
+
+  return filteredMessages.map((msg) {
+    final speaker = msg.user.id == currentUser.id ? "Usuario" : "Chati";
+    return "$speaker: ${msg.text}";
+  }).join("\n");
+}
+
 
   String _buildFullPrompt(ChatMessage userMessage) {
     final memory = _buildMemory();

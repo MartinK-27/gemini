@@ -30,8 +30,8 @@ class HomescreenState extends ConsumerState<Homescreen> {
             Padding(
                 padding: EdgeInsets.all(20),
                 child: ElevatedButton(onPressed: (){
-                  
-                }, style: ElevatedButton.styleFrom(minimumSize: Size(500, 60), backgroundColor: Colors.white),
+                  context.push('/CultivoScreen');
+                }, style: ElevatedButton.styleFrom(minimumSize: Size(500, 60), backgroundColor: Color.fromARGB(255, 22, 194, 22)),
                 child: Text("Mis Cultivos", style: TextStyle(fontSize: 30, color: Colors.black),))
               ),
 
